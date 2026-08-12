@@ -42,8 +42,8 @@ export default function Home() {
   };
 
   const handleSigninChange = (e) => {
-    const { id, value } = e.target;
-    setSigninData((prev) => ({ ...prev, [id]: value }));
+    const { name, value } = e.target;
+    setSigninData((prev) => ({ ...prev, [name]: value }));
   };
 
   // Sign Up Submission
@@ -157,6 +157,7 @@ export default function Home() {
                   <input
                     type="email"
                     id="signinEmail"
+                    name="email"
                     placeholder="example@gmail.com"
                     value={signinData.email}
                     onChange={handleSigninChange}
@@ -171,6 +172,7 @@ export default function Home() {
                   <input
                     type={showPassword ? 'text' : 'password'}
                     id="signinPassword"
+                    name="password"
                     placeholder="@#*%"
                     value={signinData.password}
                     onChange={handleSigninChange}
