@@ -50,16 +50,19 @@ export async function POST(request) {
           message: 'Account created & saved to Firebase!',
           user: { uid: userRecord.uid, name, email: cleanEmail },
         }, { status: 201 });
+      } else {
+        return NextResponse.json({
+          success: false,
+          message: 'Firebase Admin not initialized. Check FIREBASE_PROJECT_ID and FIREBASE_PRIVATE_KEY on Vercel.',
+        }, { status: 500 });
       }
     } catch (e) {
-      console.log('[FIREBASE DYNAMIC SAVE NOTE]', e.message);
+      console.error('[FIREBASE ERROR]', e);
+      return NextResponse.json({
+        success: false,
+        message: 'Firebase Error: ' + e.message,
+      }, { status: 500 });
     }
-
-    return NextResponse.json({
-      success: true,
-      message: 'Account created successfully!',
-      user: { name, email: cleanEmail },
-    }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'Registration failed.' }, { status: 400 });
   }
