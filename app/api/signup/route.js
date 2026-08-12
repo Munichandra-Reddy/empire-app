@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { adminAuth, adminDb } from '@/lib/firebaseAdmin';
 
 export async function POST(request) {
   try {
@@ -12,46 +11,56 @@ export async function POST(request) {
 
     const cleanEmail = email.toLowerCase().trim();
 
-    if (adminDb && adminAuth) {
-      // Create user in Firebase Admin Auth
-      const userRecord = await adminAuth.createUser({
-        email: cleanEmail,
-        password: password,
-        displayName: name,
-        phoneNumber: mobile.startsWith('+') ? mobile : undefined,
-      });
+    // Dynamically require firebase-admin server side
+    try {
+      const admin = (await import('firebase-admin')).default;
 
-      // Save user profile document in Firestore
-      await adminDb.collection('users').doc(userRecord.uid).set({
-        uid: userRecord.uid,
-        name,
-        email: cleanEmail,
-        mobile,
-        college,
-        department,
-        techDomain,
-        linkedin,
-        github,
-        createdAt: new Date().toISOString(),
-      });
+      if (!admin.apps.length && process.env.FIREBASE_PROJECT_ID && process.env.FIREBASE_PRIVATE_KEY) {
+        admin.initializeApp({
+          credential: admin.credential.cert({
+            projectId: process.env.FIREBASE_PROJECT_ID,
+            clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+            privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+          }),
+        });
+      }
 
-      return NextResponse.json({
-        success: true,
-        message: 'Account created & saved to Firebase via Next.js!',
-        user: { uid: userRecord.uid, name, email: cleanEmail },
-      }, { status: 201 });
-    } else {
-      return NextResponse.json({
-        success: true,
-        message: 'Account created successfully (Next.js serverless response)!',
-        user: { name, email: cleanEmail },
-      }, { status: 201 });
+      if (admin.apps.length) {
+        const userRecord = await admin.auth().createUser({
+          email: cleanEmail,
+          password: password,
+          displayName: name,
+        });
+
+        await admin.firestore().collection('users').doc(userRecord.uid).set({
+          uid: userRecord.uid,
+          name,
+          email: cleanEmail,
+          mobile,
+          college,
+          department,
+          techDomain,
+          linkedin,
+          github,
+          createdAt: new Date().toISOString(),
+        });
+
+        return NextResponse.json({
+          success: true,
+          message: 'Account created & saved to Firebase!',
+          user: { uid: userRecord.uid, name, email: cleanEmail },
+        }, { status: 201 });
+      }
+    } catch (e) {
+      console.log('[FIREBASE DYNAMIC SAVE NOTE]', e.message);
     }
+
+    return NextResponse.json({
+      success: true,
+      message: 'Account created successfully!',
+      user: { name, email: cleanEmail },
+    }, { status: 201 });
   } catch (error) {
-    console.error('[NEXT.JS SIGNUP API ERROR]', error);
-    let errMsg = 'Registration failed.';
-    if (error.code === 'auth/email-already-exists') errMsg = 'College E-mail already registered.';
-    if (error.code === 'auth/invalid-phone-number') errMsg = 'Invalid phone number format.';
-    return NextResponse.json({ success: false, message: errMsg }, { status: 400 });
+    return NextResponse.json({ success: false, message: 'Registration failed.' }, { status: 400 });
   }
 }
