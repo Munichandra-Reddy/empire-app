@@ -1,0 +1,26 @@
+{
+  "name": "empire-solara-app",
+  "version": "1.0.0",
+  "description": "Empire - Clean Mobile Solara Auth Portal with Express Node.js Backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "empire",
+    "auth",
+    "signup",
+    "solara",
+    "nodejs",
+    "express"
+  ],
+  "author": "Empire Team",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "firebase-admin": "^12.0.0"
+  }
+}

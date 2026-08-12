@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Empire — Sign up</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="page-container">
+        
+        <!-- Header Branding (Solara layout -> Empire) -->
+        <header class="brand-header">
+            <div class="logo-box">
+                <svg class="brand-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 4L4 10L16 16L28 10L16 4Z" fill="#1b4332"/>
+                    <path d="M4 16L16 22L28 16" stroke="#1b4332" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4 22L16 28L28 22" stroke="#1b4332" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="brand-name">Empire</span>
+            </div>
+        </header>
+
+        <!-- Main Auth Container -->
+        <main class="auth-card">
+
+            <!-- ================= SIGN IN VIEW ================= -->
+            <div id="signInView" class="auth-view hidden">
+                <h1 class="auth-title">Sign in</h1>
+                <p class="auth-subtitle">
+                    Don't have an account? <a href="#" id="linkToSignUp" class="action-link">Sign up</a>
+                </p>
+
+                <form id="signInForm" novalidate>
+                    <div class="field-group">
+                        <label for="signinEmail">E-mail</label>
+                        <div class="input-wrapper">
+                            <input type="email" id="signinEmail" placeholder="example@gmail.com" required autocomplete="email">
+                        </div>
+                        <span class="err-msg" id="signinEmailErr"></span>
+                    </div>
+
+                    <div class="field-group">
+                        <label for="signinPass">Password</label>
+                        <div class="input-wrapper pass-wrapper">
+                            <input type="password" id="signinPass" placeholder="@#*%" required>
+                            <button type="button" class="eye-btn" data-target="signinPass" aria-label="Toggle password visibility">
+                                <i data-lucide="eye"></i>
+                            </button>
+                        </div>
+                        <span class="err-msg" id="signinPassErr"></span>
+                    </div>
+
+                    <div class="options-row">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="rememberMe">
+                            <span class="checkmark"></span>
+                            <span class="checkbox-label">Remember me</span>
+                        </label>
+                        <a href="#" class="forgot-link">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Sign in</button>
+                </form>
+
+                <!-- Divider -->
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+
+                <!-- Social Logins -->
+                <div class="social-buttons">
+                    <button type="button" class="btn-social">
+                        <svg class="social-icon" viewBox="0 0 24 24">
+                            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.3 9 5 12 5z"/>
+                            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/>
+                            <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15s.7 5.3 1.9 7.7l3.7-2.9c-.2-.7-.4-1.5-.4-2.3z"/>
+                            <path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.3-6.4-5.2L1.9 16C3.7 19.7 7.5 22.3 12 23z"/>
+                        </svg>
+                        <span>Continue with Google</span>
+                    </button>
+
+                    <button type="button" class="btn-social">
+                        <svg class="social-icon" viewBox="0 0 24 24">
+                            <path fill="#1877F2" d="M24 12c0-6.6-5.4-12-12-12S0 5.4 0 12c0 6 4.4 10.9 10.1 11.8V15.4H7V12h3.1V9.4c0-3.1 1.8-4.8 4.7-4.8 1.4 0 2.8.2 2.8.2v3.1h-1.6c-1.5 0-2 .9-2 1.9V12h3.5l-.6 3.4h-2.9v8.4C19.6 22.9 24 18 24 12z"/>
+                        </svg>
+                        <span>Continue with Facebook</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= SIGN UP VIEW ================= -->
+            <div id="signUpView" class="auth-view active">
+                <h1 class="auth-title">Sign up</h1>
+                <p class="auth-subtitle">
+                    Already have an account? <a href="#" id="linkToSignIn" class="action-link">Sign in</a>
+                </p>
+
+                <form id="signUpForm" novalidate>
+                    
+                    <!-- 1. Name -->
+                    <div class="field-group">
+                        <label for="signupName">Full Name</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="signupName" placeholder="e.g. John Doe" required autocomplete="name">
+                        </div>
+                        <span class="err-msg" id="signupNameErr"></span>
+                    </div>
+
+                    <!-- 2. Password -->
+                    <div class="field-group">
+                        <label for="signupPass">Password</label>
+                        <div class="input-wrapper pass-wrapper">
+                            <input type="password" id="signupPass" placeholder="Create strong password (@#*%)" required>
+                            <button type="button" class="eye-btn" data-target="signupPass" aria-label="Toggle password visibility">
+                                <i data-lucide="eye"></i>
+                            </button>
+                        </div>
+                        <span class="err-msg" id="signupPassErr"></span>
+                    </div>
+
+                    <!-- 2b. Retype Password -->
+                    <div class="field-group" id="retypePassGroup">
+                        <label for="signupRetypePass">Retype Password</label>
+                        <div class="input-wrapper pass-wrapper">
+                            <input type="password" id="signupRetypePass" placeholder="Confirm your password" required>
+                            <div class="match-badge hidden" id="passMatchIcon">
+                                <i data-lucide="check-circle-2"></i>
+                            </div>
+                        </div>
+                        <span class="err-msg" id="signupRetypePassErr"></span>
+                    </div>
+
+                    <!-- 3. College Email -->
+                    <div class="field-group">
+                        <label for="signupEmail">College E-mail</label>
+                        <div class="input-wrapper">
+                            <input type="email" id="signupEmail" placeholder="student@college.edu" required autocomplete="email">
+                        </div>
+                        <span class="err-msg" id="signupEmailErr"></span>
+                    </div>
+
+                    <!-- 4. Mobile Number -->
+                    <div class="field-group">
+                        <label for="signupMobile">Mobile Number</label>
+                        <div class="input-wrapper">
+                            <input type="tel" id="signupMobile" placeholder="+91 9876543210" required autocomplete="tel">
+                        </div>
+                        <span class="err-msg" id="signupMobileErr"></span>
+                    </div>
+
+                    <!-- 5. College Name -->
+                    <div class="field-group">
+                        <label for="signupCollege">College Name</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="signupCollege" placeholder="e.g. Stanford University / IIT Madras" required>
+                        </div>
+                        <span class="err-msg" id="signupCollegeErr"></span>
+                    </div>
+
+                    <!-- 6. Department Dropdown -->
+                    <div class="field-group">
+                        <label for="signupDept">Department</label>
+                        <div class="input-wrapper select-wrapper">
+                            <select id="signupDept" required>
+                                <option value="" disabled selected>Select Department</option>
+                                <option value="cse">Computer Science Engineering</option>
+                                <option value="ece">Electronics & Communication Engineering (ECE)</option>
+                                <option value="eee">Electrical & Electronics Engineering (EEE)</option>
+                                <option value="mechanical">Mechanical Engineering</option>
+                                <option value="civil">Civil Engineering</option>
+                                <option value="aids">Artificial Intelligence & Data Science (AIDS)</option>
+                                <option value="aiml">Artificial Intelligence & Machine Learning (AIML)</option>
+                                <option value="others">Others</option>
+                            </select>
+                            <i data-lucide="chevron-down" class="select-chevron"></i>
+                        </div>
+                        <span class="err-msg" id="signupDeptErr"></span>
+                    </div>
+
+                    <!-- 7. Technology Dropdown (AI, ML, Data Science, etc.) -->
+                    <div class="field-group">
+                        <label for="signupTech">Technology Domain</label>
+                        <div class="input-wrapper select-wrapper">
+                            <select id="signupTech" required>
+                                <option value="" disabled selected>Select Technology Domain</option>
+                                <option value="ai">Artificial Intelligence (AI)</option>
+                                <option value="ml">Machine Learning (ML)</option>
+                                <option value="ds">Data Science & Analytics</option>
+                                <option value="fullstack">Full-Stack Web Development</option>
+                                <option value="mobile">Mobile App Development</option>
+                                <option value="cloud">Cloud Computing & DevOps</option>
+                                <option value="uiux">UI/UX & Product Design</option>
+                                <option value="sales">Sales & Business Growth</option>
+                            </select>
+                            <i data-lucide="chevron-down" class="select-chevron"></i>
+                        </div>
+                        <span class="err-msg" id="signupTechErr"></span>
+                    </div>
+
+                    <!-- 8. LinkedIn Profile Link -->
+                    <div class="field-group">
+                        <label for="signupLinkedin">LinkedIn Profile Link</label>
+                        <div class="input-wrapper">
+                            <input type="url" id="signupLinkedin" placeholder="https://linkedin.com/in/username" required>
+                        </div>
+                        <span class="err-msg" id="signupLinkedinErr"></span>
+                    </div>
+
+                    <!-- 9. GitHub Profile Link -->
+                    <div class="field-group">
+                        <label for="signupGithub">GitHub Profile Link</label>
+                        <div class="input-wrapper">
+                            <input type="url" id="signupGithub" placeholder="https://github.com/username" required>
+                        </div>
+                        <span class="err-msg" id="signupGithubErr"></span>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn-primary">Sign up</button>
+                </form>
+
+                <!-- Divider -->
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+
+                <!-- Social Logins -->
+                <div class="social-buttons">
+                    <button type="button" class="btn-social">
+                        <svg class="social-icon" viewBox="0 0 24 24">
+                            <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.3 9 5 12 5z"/>
+                            <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/>
+                            <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15s.7 5.3 1.9 7.7l3.7-2.9c-.2-.7-.4-1.5-.4-2.3z"/>
+                            <path fill="#34A853" d="M12 23c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.3-6.4-5.2L1.9 16C3.7 19.7 7.5 22.3 12 23z"/>
+                        </svg>
+                        <span>Continue with Google</span>
+                    </button>
+
+                    <button type="button" class="btn-social">
+                        <svg class="social-icon" viewBox="0 0 24 24">
+                            <path fill="#1877F2" d="M24 12c0-6.6-5.4-12-12-12S0 5.4 0 12c0 6 4.4 10.9 10.1 11.8V15.4H7V12h3.1V9.4c0-3.1 1.8-4.8 4.7-4.8 1.4 0 2.8.2 2.8.2v3.1h-1.6c-1.5 0-2 .9-2 1.9V12h3.5l-.6 3.4h-2.9v8.4C19.6 22.9 24 18 24 12z"/>
+                        </svg>
+                        <span>Continue with Facebook</span>
+                    </button>
+                </div>
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast hidden" id="toast">
+        <span id="toastText">Account created successfully!</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
