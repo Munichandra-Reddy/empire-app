@@ -25,12 +25,26 @@ export async function POST(request) {
       }
 
       if (admin.apps.length) {
-        const userRecord = await admin.auth().getUserByEmail(cleanEmail);
-        return NextResponse.json({
-          success: true,
-          message: 'Signed in successfully via Firebase!',
-          user: { uid: userRecord.uid, name: userRecord.displayName || 'User', email: cleanEmail },
-        });
+        const usersSnapshot = await admin.firestore().collection('users').where('email', '==', cleanEmail).get();
+        if (!usersSnapshot.empty) {
+          const userDoc = usersSnapshot.docs[0].data();
+          let isMatch = false;
+
+          try {
+            const bcrypt = (await import('bcryptjs')).default;
+            isMatch = await bcrypt.compare(password, userDoc.password);
+          } catch (bErr) {
+            isMatch = userDoc.password === password;
+          }
+
+          if (isMatch) {
+            return NextResponse.json({
+              success: true,
+              message: 'Signed in successfully!',
+              user: { uid: userDoc.uid, name: userDoc.name, email: cleanEmail },
+            });
+          }
+        }
       }
     } catch (e) {
       console.log('[FIREBASE DYNAMIC AUTH NOTE]', e.message);

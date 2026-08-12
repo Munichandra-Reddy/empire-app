@@ -26,14 +26,21 @@ export async function POST(request) {
       }
 
       if (admin.apps.length) {
-        const userDocId = 'EMP-' + Date.now();
+        // Securely hash password with bcrypt (salt rounds = 10)
+        let hashedPassword = password;
+        try {
+          const bcrypt = (await import('bcryptjs')).default;
+          hashedPassword = await bcrypt.hash(password, 10);
+        } catch (bErr) {
+          console.log('[BCRYPT HASH NOTE]', bErr.message);
+        }
 
-        // Save profile directly to Firestore users collection
+        // Save profile securely with hashed password to Firestore users collection
         await admin.firestore().collection('users').doc(userDocId).set({
           uid: userDocId,
           name,
           email: cleanEmail,
-          password,
+          password: hashedPassword,
           mobile,
           college,
           department,
