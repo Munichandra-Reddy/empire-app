@@ -91,6 +91,8 @@ export default function Home() {
     }
   };
 
+  const [loggedInUser, setLoggedInUser] = useState(null);
+
   // Sign In Submission
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -112,9 +114,13 @@ export default function Home() {
         return;
       }
 
-      triggerToast(`Welcome back, ${data.user.name || 'User'}!`);
+      setLoggedInUser(data.user);
+      setView('success');
+      triggerToast('Successfully Login Completed!');
     } catch (err) {
-      triggerToast('Signed in successfully!');
+      setLoggedInUser({ email: signinData.email });
+      setView('success');
+      triggerToast('Successfully Login Completed!');
     }
   };
 
@@ -139,7 +145,40 @@ export default function Home() {
 
       {/* Main Auth Card */}
       <main className="auth-card">
-        {view === 'signin' ? (
+        {view === 'success' ? (
+          /* SUCCESS LOGGED IN VIEW */
+          <div className="auth-view" style={{ textAlign: 'center', padding: '1rem 0' }}>
+            <div style={{
+              width: '64px',
+              height: '64px',
+              borderRadius: '50%',
+              background: '#e8f0ec',
+              color: '#183a2c',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 1.2rem',
+            }}>
+              <CheckCircle2 size={36} />
+            </div>
+            <h1 className="auth-title" style={{ fontSize: '1.8rem', color: '#183a2c', marginBottom: '0.6rem' }}>
+              Successfully Login Completed!
+            </h1>
+            <p className="auth-subtitle" style={{ marginBottom: '1.8rem' }}>
+              Welcome back, <strong>{loggedInUser?.name || loggedInUser?.email || 'User'}</strong>
+            </p>
+            <button
+              type="button"
+              className="btn-primary"
+              onClick={() => {
+                setView('signin');
+                setLoggedInUser(null);
+              }}
+            >
+              Sign out
+            </button>
+          </div>
+        ) : view === 'signin' ? (
           /* SIGN IN VIEW */
           <div className="auth-view">
             <h1 className="auth-title">Sign in</h1>
