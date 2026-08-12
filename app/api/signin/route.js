@@ -25,25 +25,49 @@ export async function POST(request) {
       }
 
       if (admin.apps.length) {
-        const usersSnapshot = await admin.firestore().collection('users').where('email', '==', cleanEmail).get();
-        if (!usersSnapshot.empty) {
-          const userDoc = usersSnapshot.docs[0].data();
+        // Query users collection by email
+        const usersSnapshot = await admin.firestore().collection('users').get();
+        let matchedUser = null;
+
+        usersSnapshot.forEach(doc => {
+          const data = doc.data();
+          if (data.email && data.email.toLowerCase().trim() === cleanEmail) {
+            matchedUser = data;
+          }
+        });
+
+        if (matchedUser) {
           let isMatch = false;
 
+          // Check Bcrypt hash or direct string match
           try {
             const bcrypt = (await import('bcryptjs')).default;
-            isMatch = await bcrypt.compare(password, userDoc.password);
+            if (matchedUser.password.startsWith('$2a$') || matchedUser.password.startsWith('$2b$')) {
+              isMatch = await bcrypt.compare(password, matchedUser.password);
+            } else {
+              isMatch = matchedUser.password === password;
+            }
           } catch (bErr) {
-            isMatch = userDoc.password === password;
+            isMatch = matchedUser.password === password;
           }
 
           if (isMatch) {
             return NextResponse.json({
               success: true,
-              message: 'Signed in successfully!',
-              user: { uid: userDoc.uid, name: userDoc.name, email: cleanEmail },
-            });
+              message: 'Successfully logged in!',
+              user: { uid: matchedUser.uid, name: matchedUser.name, email: cleanEmail },
+            }, { status: 200 });
+          } else {
+            return NextResponse.json({
+              success: false,
+              message: 'Incorrect password. Please try again.',
+            }, { status: 401 });
           }
+        } else {
+          return NextResponse.json({
+            success: false,
+            message: 'No account found with this email. Please Sign Up.',
+          }, { status: 404 });
         }
       }
     } catch (e) {
