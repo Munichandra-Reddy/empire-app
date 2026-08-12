@@ -144,7 +144,7 @@ export default function Home() {
           <div className="auth-view">
             <h1 className="auth-title">Sign in</h1>
             <p className="auth-subtitle">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <span onClick={() => setView('signup')} className="action-link">
                 Sign up
               </span>
