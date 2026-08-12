@@ -26,6 +26,8 @@ export async function POST(request) {
       }
 
       if (admin.apps.length) {
+        const userDocId = 'EMP-' + Date.now();
+
         // Securely hash password with bcrypt (salt rounds = 10)
         let hashedPassword = password;
         try {
